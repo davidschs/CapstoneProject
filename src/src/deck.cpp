@@ -11,7 +11,8 @@
 #include <vector>
 #include <iostream>
 #include <cstdlib>
-#include "deck.h"
+#include "deck.hpp"
+#include "game.hpp"
 
 
 void initialize(Deck& deck)
@@ -37,6 +38,14 @@ void print_deck(const Deck& deck)
     }
 }
 
+void print_hand(const std::vector<Card>& hand)
+{
+    for (Card c : hand)
+    {
+        print_card(c);
+    }
+}
+
 void print_card(const Card& card)
 {
         std::cout << "Suit: " << card.suit << " Card: " << card.rank << std::endl;
@@ -57,32 +66,3 @@ void shuffle(Deck& deck)
     deck = shuffled;
 }
 
-void deal_cards(Deck& deck, std::vector<Card>& player, std::vector<Card>& dealer, int num_cards)
-{
-    std::cout << deck.cards.size() << std::endl;
-    if (deck.cards.size() < 10) // Dealer Cut at 10 cards remaining
-    {
-        std::cout << "End of Deck, Dealer shuffle" << std::endl;
-    }
-    else
-    {
-        for (int i = 1; i <= num_cards; i++)
-        {
-        player.push_back(deck.cards[0]);
-        deck.cards.erase(deck.cards.begin());
-        dealer.push_back(deck.cards[0]);
-        deck.cards.erase(deck.cards.begin());
-        }
-    }
-    print_hand(player);
-    print_hand(dealer);
-    std::cout << "\n";
-}
-
-void print_hand(const std::vector<Card>& hand)
-{
-    for (Card c : hand)
-    {
-        print_card(c);
-    }
-}

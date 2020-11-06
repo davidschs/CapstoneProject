@@ -1,13 +1,13 @@
 //
-//  deck.h
+//  deck.hpp
 //  src
 //
 //  Created by David Schulte Südhoff on 11/5/20.
 //  Copyright © 2020 David Schulte Südhoff. All rights reserved.
 //
 
-#ifndef deck_h
-#define deck_h
+#ifndef deck_hpp
+#define deck_hpp
 #include <vector>
 #include <iostream>
 
@@ -26,15 +26,14 @@ struct Card {
 
 // Define the Deck containing of the Cards
 struct Deck {
-    std::vector<Card> cards;
     int deck_size = 52;
+    std::vector<Card> cards;
 };
 
 void initialize(Deck&);
 void print_deck(const Deck&);
 void print_card(const Card&);
 void shuffle(Deck&);
-void deal_cards(Deck&, std::vector<Card>&, std::vector<Card>&, int);
 void print_hand(const std::vector<Card>&);
 
-#endif /* deck_h */
+#endif /* deck_hpp */

@@ -9,15 +9,12 @@
 #include <iostream>
 #include <vector>
 #include <thread>
-#include "deck.h"
+#include "deck.hpp"
+#include "game.hpp"
 
 int main() {
-    Deck my_deck;
-    initialize(my_deck);
-    shuffle(my_deck);
-    std::vector<Card> player;
-    std::vector<Card> dealer;
-    deal_cards(my_deck, player, dealer, 2);
-    
+    Game game;
+    initialize(game);
+    print_game(game);
 }
 

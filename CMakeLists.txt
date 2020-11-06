@@ -8,5 +8,5 @@ set(CMAKE_CXX_FLAGS, "${CXX_FLAGS}")
 project(Capstone)
 
 
-add_executable(Capstone src/src/main.cpp src/src/deck.cpp)
+add_executable(Capstone src/src/main.cpp src/src/deck.cpp src/src/game.cpp)
 
