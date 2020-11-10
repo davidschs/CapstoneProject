@@ -15,6 +15,5 @@
 int main() {
     Game game;
     initialize(game);
-    print_game(game);
 }
 

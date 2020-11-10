@@ -12,9 +12,24 @@
 #include <iostream>
 
 // Define all possible Rank and Suit of cards
-enum Rank { two, three, four, five, six, seven, eight, nine, ten, jack, queen, king, ace};
-enum Suit { Spades, Heards, Clubs, Diamonds};
+enum Rank
+{
+    Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace
+};
 
+enum Suit
+{
+    Spades, Heards, Clubs, Diamonds
+};
+
+/*
+//operator overloading to access strings of enum
+std::ostream &operator << (std:: ostream& os, Rank r)
+{
+   const std::string rank[] = {"Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"};
+   return os << rank[r];
+}
+*/
 // Define the Card
 struct Card {
     Rank rank;
@@ -35,5 +50,4 @@ void print_deck(const Deck&);
 void print_card(const Card&);
 void shuffle(Deck&);
 void print_hand(const std::vector<Card>&);
-
 #endif /* deck_hpp */

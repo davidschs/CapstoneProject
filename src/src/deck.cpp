@@ -14,14 +14,74 @@
 #include "deck.hpp"
 #include "game.hpp"
 
+// print name of enum class
+void print_rank(Rank r) {
+   switch(r) {
+      case Two:
+         std::cout << "Two";
+         break;
+      case Three:
+         std::cout << "Three";
+         break;
+      case Four:
+         std::cout << "Four";
+         break;
+      case Five:
+         std::cout << "Five";
+         break;
+      case Six:
+         std::cout << "Six";
+         break;
+      case Seven:
+         std::cout << "Seven";
+         break;
+      case Eight:
+         std::cout << "Eight";
+         break;
+      case Nine:
+         std::cout << "Nine";
+         break;
+      case Ten:
+         std::cout << "Ten";
+         break;
+      case Jack:
+         std::cout << "Jack";
+         break;
+      case Queen:
+         std::cout << "Queen";
+         break;
+      case King:
+         std::cout << "King";
+         break;
+      case Ace:
+         std::cout << "Ace";
+         break;
+   }
+}
 
+void print_suit(Suit s) {
+switch(s) {
+   case Spades:
+      std::cout << "Spades";
+      break;
+   case Heards:
+      std::cout << "Heards";
+      break;
+   case Clubs:
+      std::cout << "Clubs";
+      break;
+   case Diamonds:
+      std::cout << "Diamonds";
+      break;
+   }
+}
 void initialize(Deck& deck)
 // Filling the Deck with the appropriate specific cards
 {
     Card card;
-    for (int suit = 1; suit <= card.num_suit; suit++)
+    for (int suit = 0; suit < card.num_suit; suit++)
     {
-        for (int rank = 1; rank <= card.num_rank; rank++)
+        for (int rank = 0; rank < card.num_rank; rank++)
         {
             card.suit = Suit(suit);
             card.rank = Rank(rank);
@@ -48,7 +108,10 @@ void print_hand(const std::vector<Card>& hand)
 
 void print_card(const Card& card)
 {
-        std::cout << "Suit: " << card.suit << " Card: " << card.rank << std::endl;
+    print_rank(card.rank);
+    std::cout << " of ";
+    print_suit(card.suit);
+    std::cout << '\n';
 }
 
 void shuffle(Deck& deck)
