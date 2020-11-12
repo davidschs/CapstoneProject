@@ -34,6 +34,7 @@ std::ostream &operator << (std:: ostream& os, Rank r)
 struct Card {
     Rank rank;
     Suit suit;
+    int value;
     int num_rank = 13;
     int num_suit = 4;
     
@@ -50,4 +51,7 @@ void print_deck(const Deck&);
 void print_card(const Card&);
 void shuffle(Deck&);
 void print_hand(const std::vector<Card>&);
+void print_rank(Rank&);
+void print_suit(Suit&);
+int get_value(Rank);
 #endif /* deck_hpp */

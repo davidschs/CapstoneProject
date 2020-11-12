@@ -14,8 +14,8 @@
 #include "deck.hpp"
 #include "game.hpp"
 
-// print name of enum class
 void print_rank(Rank r) {
+// get name of enum class
    switch(r) {
       case Two:
          std::cout << "Two";
@@ -31,10 +31,8 @@ void print_rank(Rank r) {
          break;
       case Six:
          std::cout << "Six";
-         break;
       case Seven:
          std::cout << "Seven";
-         break;
       case Eight:
          std::cout << "Eight";
          break;
@@ -60,6 +58,7 @@ void print_rank(Rank r) {
 }
 
 void print_suit(Suit s) {
+// get name of suit of enum class
 switch(s) {
    case Spades:
       std::cout << "Spades";
@@ -74,6 +73,54 @@ switch(s) {
       std::cout << "Diamonds";
       break;
    }
+}
+
+int get_value(Rank r) {
+// get value of card of enum class
+   int value;
+   switch(r) {
+      case Two:
+         value = 2;
+         break;
+      case Three:
+         value = 3;
+         break;
+      case Four:
+         value = 4;
+         break;
+      case Five:
+         value = 5;
+         break;
+      case Six:
+         value = 6;
+         break;
+      case Seven:
+         value = 7;
+         break;
+      case Eight:
+         value = 8;
+         break;
+      case Nine:
+         value = 9;
+         break;
+      case Ten:
+         value = 10;
+         break;
+      case Jack:
+         value = 10;
+         break;
+      case Queen:
+         value = 10;
+         break;
+      case King:
+         value = 10;
+         break;
+      case Ace:
+         value = 11;
+         break;
+   }
+  //  std::cout << value;
+   return value;
 }
 void initialize(Deck& deck)
 // Filling the Deck with the appropriate specific cards
@@ -113,6 +160,16 @@ void print_card(const Card& card)
     print_suit(card.suit);
     std::cout << '\n';
 }
+
+//int get_value(const Card& c)
+//{
+//    Card card;
+//    card.value = get_rank(c.rank);
+//    std::cout << card.value << std::endl;
+//    int v = get_rank(c.rank);
+//    std::cout << v << std::endl;
+//    return v;
+//}
 
 void shuffle(Deck& deck)
 {

@@ -64,10 +64,10 @@
 			isa = PBXGroup;
 			children = (
 				63FEC9052553AB56007838CC /* main.cpp */,
-				63FEC90D2554D7D0007838CC /* deck.cpp */,
 				63FEC90C2554D2FE007838CC /* deck.hpp */,
-				63FEC9122555B166007838CC /* game.cpp */,
+				63FEC90D2554D7D0007838CC /* deck.cpp */,
 				63FEC9132555B166007838CC /* game.hpp */,
+				63FEC9122555B166007838CC /* game.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";

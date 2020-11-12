@@ -31,6 +31,8 @@ void add_players(Game&, int);
 void deal_cards(Game&);
 void print_game(const Game&);
 void play_round(Game&);
-void make_decision();
+char make_decision();
+int check_score(const std::vector<Card>&);
+void compare_score(Game&);
 #endif /* game_hpp */
     
