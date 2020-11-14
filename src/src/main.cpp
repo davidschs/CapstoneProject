@@ -13,6 +13,7 @@
 #include "game.hpp"
 
 int main() {
+    std::cout << "♤♤♤♤♤♤♤♤♤♤♤♤ BLACKJACK ♤♤♤♤♤♤♤♤♤♤♤♤" << std::endl;
     Game game;
     initialize(game);
 }

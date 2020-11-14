@@ -21,7 +21,7 @@ struct Player {
 struct Game {
     std::vector<Player> players;
     Player dealer;
-    int num_players = 2;
+    int num_players = 1;
     int cards_per_hand = 2;
     Deck deck;
 };
@@ -34,5 +34,8 @@ void play_round(Game&);
 char make_decision();
 int check_score(const std::vector<Card>&);
 void compare_score(Game&);
+void dealer_move(Game&);
+bool check_blackjack(int);
+bool all_player_bust(Game&);
 #endif /* game_hpp */
     

@@ -22,14 +22,7 @@ enum Suit
     Spades, Heards, Clubs, Diamonds
 };
 
-/*
-//operator overloading to access strings of enum
-std::ostream &operator << (std:: ostream& os, Rank r)
-{
-   const std::string rank[] = {"Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"};
-   return os << rank[r];
-}
-*/
+
 // Define the Card
 struct Card {
     Rank rank;
