@@ -21,13 +21,13 @@ struct Player {
 struct Game {
     std::vector<Player> players;
     Player dealer;
-    int num_players = 1;
+    int num_players;
     int cards_per_hand = 2;
     Deck deck;
 };
 
 void initialize(Game&);
-void add_players(Game&, int);
+void add_players(Game&);
 void deal_cards(Game&);
 void print_game(const Game&);
 void play_round(Game&);
@@ -37,5 +37,7 @@ void compare_score(Game&);
 void dealer_move(Game&);
 bool check_blackjack(int);
 bool all_player_bust(Game&);
+void game_loop(Game&);
+void clear_hands(Game&);
 #endif /* game_hpp */
     

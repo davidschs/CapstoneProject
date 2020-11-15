@@ -135,13 +135,14 @@ int get_value(Rank r) {
 void initialize(Deck& deck)
 // Filling the Deck with the appropriate specific cards
 {
+    std::cout << "This is a single Deck Game" << std::endl;
     Card card;
     for (int suit = 0; suit < card.num_suit; suit++)
     {
         for (int rank = 0; rank < card.num_rank; rank++)
         {
-            card.suit = Suit(suit);
-            card.rank = Rank(rank);
+            card.setSuit(suit);
+            card.setRank(rank);
             deck.cards.push_back(card);
         }
     }
@@ -166,11 +167,11 @@ void print_hand(const std::vector<Card>& hand)
 }
 
 
-void print_card(const Card& card)
+void print_card(Card& card)
 {
-    print_suit(card.suit);
+    print_suit(card.getSuit());
     std::cout << " "; // Space between suit and number 
-    print_rank(card.rank);
+    print_rank(card.getRank());
     std::cout << '\n';
 }
 

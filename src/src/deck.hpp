@@ -23,14 +23,29 @@ enum Suit
 };
 
 
-// Define the Card
-struct Card {
-    Rank rank;
-    Suit suit;
+// Define the class Card
+class Card {
+    
+public:
     int value;
     int num_rank = 13;
     int num_suit = 4;
     
+    void setRank(int rank)
+    {
+        rank_ = Rank(rank);
+    }
+    Rank getRank() const {return rank_; }
+    
+    void setSuit(int suit)
+    {
+        suit_ = Suit(suit);
+    }
+    Suit getSuit() const {return suit_; }
+    
+private:
+    Rank rank_;
+    Suit suit_;
 };
 
 // Define the Deck containing of the Cards
@@ -41,10 +56,11 @@ struct Deck {
 
 void initialize(Deck&);
 void print_deck(const Deck&);
-void print_card(const Card&);
+void print_card(Card&);
 void shuffle(Deck&);
 void print_hand(const std::vector<Card>&);
 void print_rank(Rank&);
 void print_suit(Suit&);
 int get_value(Rank);
+
 #endif /* deck_hpp */

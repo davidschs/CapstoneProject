@@ -13,8 +13,11 @@
 #include "game.hpp"
 
 int main() {
+    std::cout << '\n';
     std::cout << "♤♤♤♤♤♤♤♤♤♤♤♤ BLACKJACK ♤♤♤♤♤♤♤♤♤♤♤♤" << std::endl;
+    
     Game game;
     initialize(game);
+    game_loop(game);
 }
 

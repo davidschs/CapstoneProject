@@ -14,40 +14,58 @@
 #include "game.hpp"
 #include "deck.hpp"
 
+
 void initialize(Game& game)
 {
     // Initialize, shuffle, add players and deal first round of cards
     initialize(game.deck);
+    add_players(game);
     shuffle(game.deck);
-    add_players(game, game.num_players);
-    deal_cards(game);
-    play_round(game);
 }
 
-void add_players(Game& game, int num_players)
+
+void game_loop (Game& game)
 {
-    // Create players and push back to object "players"
+    while (game.deck.cards.size() > 30) // Dealer Cut with 30 cards remaining
+       {
+           deal_cards(game);
+           play_round(game);
+       }
+    std::cout << "End of Deck, Dealer shuffle" << std::endl;
+}
+
+
+void add_players(Game& game)
+{
+    // Create players
+    char n_players;
+    std::cout << "Enter the number of players: ";
+    std::cin >> n_players;
+    while (isdigit(n_players) == false)
+    {
+        std::cout << "Please enter a valid number" << std::endl;
+        std::cout << "Enter the number of players: ";
+        std::cin >> n_players;
+    }
+    // Push back created players into a vector of type "Player"
+    game.num_players = n_players - '0'; // Using ASCII conversion to convert char to int
     for (int player = 0; player < game.num_players; player++)
     {
         Player new_player;
         game.players.push_back(new_player);
     }
-    std::cout << game.players.size() << " Players have been created" << std::endl;
-    std::this_thread::sleep_for (std::chrono::seconds(2));
+    std::cout << game.players.size() << " Player(s) have been created" << std::endl;
 }
+
+
 
 void deal_cards(Game& game)
 {
-    std::cout << "The cards will be dealt" << std::endl;
     std::this_thread::sleep_for (std::chrono::seconds(1));
     std::cout << "-------------------------------------" << std::endl;
+    std::cout << "New cards will be dealt" << std::endl;
     std::this_thread::sleep_for (std::chrono::seconds(1));
-    if (game.deck.cards.size() < 10) // Dealer Cut at 10 cards remaining
-    {
-        std::cout << "End of Deck, Dealer shuffle" << std::endl;
-    }
-    else
-    {
+
         // Deal the first round, each player + dealer gets two cards
         for (int card = 0; card < game.cards_per_hand; card++)
         {
@@ -55,23 +73,24 @@ void deal_cards(Game& game)
             {
                 game.players[player].hand.push_back(game.deck.cards[0]);
                 game.deck.cards.erase(game.deck.cards.begin());
-                //std::cout << game.deck.cards.size() << std::endl; // print deck size
             }
             game.dealer.hand.push_back(game.deck.cards[0]);
             game.deck.cards.erase(game.deck.cards.begin());
-            //std::cout << game.deck.cards.size() << std::endl; // print deck size
         }
-    }
         std::cout << "\n";
 }
+
 
 void print_game(const Game& game)
 {
     for (int player = 0; player < game.num_players; player++)
     {
+        std::cout << "Player " << player+1 << " has the hand";
         print_hand(game.players[player].hand);
+        std::this_thread::sleep_for (std::chrono::seconds(1));
         std::cout << '\n';
     }
+    std::cout << "Dealer has the hand ";
     print_hand(game.dealer.hand);
 }
 
@@ -111,14 +130,15 @@ int check_score(const std::vector<Card>& hand)
 {
     // Loop over card values of hand and return the score
     int score = 0;
-    // deklaring two Aces if players gets two aces in a hand
+    // declaring two Aces in case players gets two aces in one hand
     bool ace1 = false;
     bool ace2 = false;
     for (int card=0; card<hand.size(); card++)
     {
-        score = score + get_value(hand[card].rank);
+        score = score + get_value(hand[card].getRank());
+        
         // Aces get handled uniquely since their value is either 1 or 11
-        if (get_value(hand[card].rank) == 11)
+        if (get_value(hand[card].getRank()) == 11)
         {
             if (ace1 == true)
             {
@@ -145,6 +165,7 @@ int check_score(const std::vector<Card>& hand)
     }
     return score;
 }
+
 
 bool all_player_bust(Game& game)
 {
@@ -191,29 +212,35 @@ void compare_score(Game& game)
     {
         game.dealer.score = check_score(game.dealer.hand);
         game.players[player].score = check_score(game.players[player].hand);
+        
         // Neither dealer or player bust, but player has higher score
         if (game.players[player].score > game.dealer.score && game.players[player].score <  22)
         {
             std::cout << "Player " << player+1 << " wins" <<std::endl;
+            std::this_thread::sleep_for (std::chrono::seconds(1));
         }
         // If dealer busts, but player doesn't
         else if (game.players[player].score < 22 && game.dealer.score > 21)
         {
             std::cout << "Player " << player+1 << " wins" <<std::endl;
+            std::this_thread::sleep_for (std::chrono::seconds(1));
         }
-        // If player has a blackjack (first two cards)
-        else if (game.players[player].score == 21 && game.players[player].hand.size() == 2 && game.dealer.score != 21)
+        // If player has a blackjack (first two cards) and dealer doesn't
+        else if (check_blackjack(game.players[player].score) == true && check_blackjack(game.dealer.score) == false)
         {
             std::cout << "Player " << player+1 << " wins due to Blackjack" << std::endl;
+            std::this_thread::sleep_for (std::chrono::seconds(1));
         }
         // Dealer and player push
         else if (game.players[player].score == game.dealer.score && game.players[player].score < 22)
         {
             std::cout << "Player " << player+1 << " pushes" <<std::endl;
+            std::this_thread::sleep_for (std::chrono::seconds(1));
         }
         else
         {
         std::cout << "Player " << player+1 << " looses" << std::endl;
+            std::this_thread::sleep_for (std::chrono::seconds(1));
         }
     }
 }
@@ -268,13 +295,15 @@ void dealer_move(Game& game)
     }
 }
 
+
 void play_round(Game& game)
 {
     std::cout << "Dealer has the Upcard ";
     print_card(game.dealer.hand[0]); // Print out first card of Dealers hand
     std::cout << '\n';
-    std::this_thread::sleep_for (std::chrono::seconds(2));
+    std::this_thread::sleep_for (std::chrono::seconds(1));
     // check if dealer has a Blackjack
+    game.dealer.score = check_score(game.dealer.hand);
     if (check_blackjack(game.dealer.score) != true)
     {
         // If dealer does not have a Blackjack, continue play
@@ -285,11 +314,13 @@ void play_round(Game& game)
            std::this_thread::sleep_for (std::chrono::seconds(2));
            game.players[player].score = check_score(game.players[player].hand);
            std::cout << "Current Score: " << game.players[player].score << std::endl;
-           std::this_thread::sleep_for (std::chrono::seconds(2));
-           
+           std::this_thread::sleep_for (std::chrono::seconds(1));
+            
+           // check if player has a blackjack
            if (check_blackjack(game.players[player].score) == true)
            {
                std::cout << "Player has a Blackjack!" << std::endl;
+               std::cout << '\n';
                continue;
            }
            
@@ -307,6 +338,7 @@ void play_round(Game& game)
                    std::cout << "Current Score: " << game.players[player].score << std::endl;
                    std::this_thread::sleep_for (std::chrono::seconds(2));
                    game.deck.cards.erase(game.deck.cards.begin());
+                   
                    if (game.players[player].score > 21)
                    {
                        std::cout << "Player bust!" << std::endl;
@@ -324,11 +356,26 @@ void play_round(Game& game)
        }
         dealer_move(game);
         compare_score(game);
+        clear_hands(game);
     }
     else
     {
         // If dealer does have a Blackjack, compare score with players
         std::cout << "Dealer has a Blackjack!" << std::endl;
+        std::this_thread::sleep_for (std::chrono::seconds(2));
+        print_game(game);
         compare_score(game);
+        clear_hands(game);
     }
+}
+
+
+void clear_hands(Game& game)
+{
+    // clear the vectors containing the cards for player and dealer
+    for (int player = 0; player < game.num_players; player++)
+    {
+        game.players[player].hand.clear();
+    }
+    game.dealer.hand.clear();
 }
