@@ -1,10 +1,20 @@
-# CPPND: Capstone Hello World Repo
+# CPPND: Capstone Blackjack Simulation
 
-This is a starter repo for the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213).
+This is the Capstone project for the Udacity C++ Nanodegree course. A Blackjack game is simulated using varius C++ topics, including OOP and Smart Pointers. After running the program, the user gets prompted through a single Deck game of Blackjack in the Terminal. This game does not include any special Blackjack Rules.
 
-The Capstone Project gives you a chance to integrate what you've learned throughout this program. This project will become an important part of your portfolio to share with current and future colleagues and employers.
+## Rubric Point adressed
 
-In this project, you can build your own C++ application starting with this repo, following the principles you have learned throughout this Nanodegree Program. This project will demonstrate that you can independently create applications using a wide range of C++ features.
+The following points regarding programming skills in C++ are covered in the created program:
+* Loops, Functions, I/O
+  * The project demonstartes an understanding of C++ functions and control structures
+  * The project accepts user input and processes the input
+
+* Object Oriented Programming
+  * The project uses Object Oriented Programming Techniques
+  * Classes use appropriate access specifiers for class members
+  
+* Memory Management
+  * The project makes use of references in function declarations
 
 ## Dependencies for Running Locally
 * cmake >= 3.7
@@ -23,4 +33,4 @@ In this project, you can build your own C++ application starting with this repo,
 1. Clone this repo.
 2. Make a build directory in the top level directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
-4. Run it: `./HelloWorld`.
+4. Run it: `./Capstone`.
