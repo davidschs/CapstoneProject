@@ -31,6 +31,7 @@ public:
     int num_rank = 13;
     int num_suit = 4;
     
+    // Getters and Setters for Card features (Suit and Rank)
     void setRank(int rank)
     {
         rank_ = Rank(rank);
@@ -49,18 +50,20 @@ private:
 };
 
 // Define the Deck containing of the Cards
-struct Deck {
-    int deck_size = 52;
+class Deck{
+public:
     std::vector<Card> cards;
+    
+    void initialize_deck(Deck&);
+    void print_deck(const Deck&);
+    void shuffle(Deck&);
 };
 
-void initialize(Deck&);
-void print_deck(const Deck&);
-void print_card(Card&);
-void shuffle(Deck&);
 void print_hand(const std::vector<Card>&);
+void print_card(Card&);
 void print_rank(Rank&);
 void print_suit(Suit&);
 int get_value(Rank);
+int check_score(const std::vector<Card>&);
 
 #endif /* deck_hpp */

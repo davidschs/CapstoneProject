@@ -17,7 +17,7 @@ int main() {
     std::cout << "♤♤♤♤♤♤♤♤♤♤♤♤ BLACKJACK ♤♤♤♤♤♤♤♤♤♤♤♤" << std::endl;
     
     Game game;
-    initialize(game);
-    game_loop(game);
+    game.initialize(game);
+    game.game_loop(game);
 }
 

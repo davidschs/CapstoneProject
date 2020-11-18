@@ -127,12 +127,11 @@ int get_value(Rank r) {
          value = 11;
          break;
    }
-  //  std::cout << value;
    return value;
 }
 
 
-void initialize(Deck& deck)
+void Deck::initialize_deck(Deck& deck)
 // Filling the Deck with the appropriate specific cards
 {
     std::cout << "This is a single Deck Game" << std::endl;
@@ -149,7 +148,7 @@ void initialize(Deck& deck)
 }
 
 
-void print_deck(const Deck& deck)
+void Deck::print_deck(const Deck& deck)
 {
     for (Card c : deck.cards)
     {
@@ -176,7 +175,7 @@ void print_card(Card& card)
 }
 
 
-void shuffle(Deck& deck)
+void Deck::shuffle(Deck& deck)
 {
     std::cout << "Deck will be shuffled" << std::endl;
     std::this_thread::sleep_for (std::chrono::seconds(2));
@@ -193,3 +192,42 @@ void shuffle(Deck& deck)
     deck = shuffled;
 }
 
+int check_score(const std::vector<Card>& hand)
+{
+    // Loop over card values of hand and return the score
+    int score = 0;
+    // declaring two Aces in case players gets two aces in one hand
+    bool ace1 = false;
+    bool ace2 = false;
+    for (int card=0; card<hand.size(); card++)
+    {
+        score = score + get_value(hand[card].getRank());
+        
+        // Aces get handled uniquely since their value is either 1 or 11
+        if (get_value(hand[card].getRank()) == 11)
+        {
+            if (ace1 == true)
+            {
+                ace2 = true; //setting ace2 to true if second ace appears in hand
+            }
+            else
+            {
+                ace1 = true; //setting ace1 to true when first ace appears in hand
+            }
+        }
+        if (score > 21 && ace1 == true)
+        {
+            if (ace2 == true)
+            {
+                score = score-10;
+                ace2 = false; // ace2 is set to value 1 when player surpasses 21
+            }
+            else
+            {
+                score = score-10;
+                ace1 = false; // ace1 is set to value 1 if player surpasses 21 again
+            }
+        }
+    }
+    return score;
+}

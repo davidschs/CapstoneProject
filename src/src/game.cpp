@@ -11,20 +11,21 @@
 #include <thread>
 #include <chrono>
 #include <algorithm>
+#include <memory>
 #include "game.hpp"
 #include "deck.hpp"
 
 
-void initialize(Game& game)
+void Game::initialize(Game& game)
 {
     // Initialize, shuffle, add players and deal first round of cards
-    initialize(game.deck);
+    game.deck.initialize_deck(game.deck);
     add_players(game);
-    shuffle(game.deck);
+    game.deck.shuffle(game.deck);
 }
 
 
-void game_loop (Game& game)
+void Game::game_loop (Game& game)
 {
     while (game.deck.cards.size() > 30) // Dealer Cut with 30 cards remaining
        {
@@ -35,24 +36,25 @@ void game_loop (Game& game)
 }
 
 
-void add_players(Game& game)
+void Game::add_players(Game& game)
 {
     // Create players
     char n_players;
-    std::cout << "Enter the number of players: ";
+    std::cout << "Enter the number of players (1-4): ";
     std::cin >> n_players;
-    while (isdigit(n_players) == false)
+    game.num_players = n_players - '0'; // Using ASCII conversion to convert char to int
+    while (isdigit(n_players) == false || game.num_players < 1 || game.num_players > 4)
     {
         std::cout << "Please enter a valid number" << std::endl;
         std::cout << "Enter the number of players: ";
         std::cin >> n_players;
+        game.num_players = n_players - '0'; // Using ASCII conversion to convert char to int
     }
     // Push back created players into a vector of type "Player"
-    game.num_players = n_players - '0'; // Using ASCII conversion to convert char to int
     for (int player = 0; player < game.num_players; player++)
     {
         Player new_player;
-        game.players.push_back(new_player);
+        game.players.emplace_back(std::move(new_player));
     }
     std::cout << game.players.size() << " Player(s) have been created" << std::endl;
 }
@@ -67,11 +69,11 @@ void deal_cards(Game& game)
     std::this_thread::sleep_for (std::chrono::seconds(1));
 
         // Deal the first round, each player + dealer gets two cards
-        for (int card = 0; card < game.cards_per_hand; card++)
+        for (int card = 0; card < game.get_cards_per_hand(); card++)
         {
             for (int player = 0; player < game.num_players; player++)
             {
-                game.players[player].hand.push_back(game.deck.cards[0]);
+                game.players[player]->hand.push_back(game.deck.cards[0]);
                 game.deck.cards.erase(game.deck.cards.begin());
             }
             game.dealer.hand.push_back(game.deck.cards[0]);
@@ -86,7 +88,7 @@ void print_game(const Game& game)
     for (int player = 0; player < game.num_players; player++)
     {
         std::cout << "Player " << player+1 << " has the hand";
-        print_hand(game.players[player].hand);
+        print_hand(game.players[player]->hand);
         std::this_thread::sleep_for (std::chrono::seconds(1));
         std::cout << '\n';
     }
@@ -126,47 +128,6 @@ char make_decision()
 }
 
 
-int check_score(const std::vector<Card>& hand)
-{
-    // Loop over card values of hand and return the score
-    int score = 0;
-    // declaring two Aces in case players gets two aces in one hand
-    bool ace1 = false;
-    bool ace2 = false;
-    for (int card=0; card<hand.size(); card++)
-    {
-        score = score + get_value(hand[card].getRank());
-        
-        // Aces get handled uniquely since their value is either 1 or 11
-        if (get_value(hand[card].getRank()) == 11)
-        {
-            if (ace1 == true)
-            {
-                ace2 = true; //setting ace2 to true if second ace appears in hand
-            }
-            else
-            {
-                ace1 = true; //setting ace1 to true when first ace appears in hand
-            }
-        }
-        if (score > 21 && ace1 == true)
-        {
-            if (ace2 == true)
-            {
-                score = score-10;
-                ace2 = false; // ace2 is set to value 1 when player surpasses 21
-            }
-            else
-            {
-                score = score-10;
-                ace1 = false; // ace1 is set to value 1 if player surpasses 21 again
-            }
-        }
-    }
-    return score;
-}
-
-
 bool all_player_bust(Game& game)
 {
     bool players_bust = true;
@@ -174,8 +135,8 @@ bool all_player_bust(Game& game)
     //check if all players busted in this round
     while (players_bust == true && player < game.num_players)
     {
-        game.players[player].score = check_score(game.players[player].hand);
-        if (game.players[player].score < 22)
+        game.players[player]->score = check_score(game.players[player]->hand);
+        if (game.players[player]->score < 22)
         {
             // If one player did not bust, set players_bust to false
             players_bust = false;
@@ -201,7 +162,7 @@ bool check_blackjack(int score)
 }
 
 
-void compare_score(Game& game)
+void Game::compare_score(Game& game)
 {
     //Compare the players score with the dealers hand
     // If dealer busted, every player wins
@@ -211,28 +172,28 @@ void compare_score(Game& game)
     for (int player = 0; player < game.num_players; player++)
     {
         game.dealer.score = check_score(game.dealer.hand);
-        game.players[player].score = check_score(game.players[player].hand);
+        game.players[player]->score = check_score(game.players[player]->hand);
         
         // Neither dealer or player bust, but player has higher score
-        if (game.players[player].score > game.dealer.score && game.players[player].score <  22)
+        if (game.players[player]->score > game.dealer.score && game.players[player]->score <  22)
         {
             std::cout << "Player " << player+1 << " wins" <<std::endl;
             std::this_thread::sleep_for (std::chrono::seconds(1));
         }
         // If dealer busts, but player doesn't
-        else if (game.players[player].score < 22 && game.dealer.score > 21)
+        else if (game.players[player]->score < 22 && game.dealer.score > 21)
         {
             std::cout << "Player " << player+1 << " wins" <<std::endl;
             std::this_thread::sleep_for (std::chrono::seconds(1));
         }
         // If player has a blackjack (first two cards) and dealer doesn't
-        else if (check_blackjack(game.players[player].score) == true && check_blackjack(game.dealer.score) == false)
+        else if (check_blackjack(game.players[player]->score) == true && check_blackjack(game.dealer.score) == false)
         {
             std::cout << "Player " << player+1 << " wins due to Blackjack" << std::endl;
             std::this_thread::sleep_for (std::chrono::seconds(1));
         }
         // Dealer and player push
-        else if (game.players[player].score == game.dealer.score && game.players[player].score < 22)
+        else if (game.players[player]->score == game.dealer.score && game.players[player]->score < 22)
         {
             std::cout << "Player " << player+1 << " pushes" <<std::endl;
             std::this_thread::sleep_for (std::chrono::seconds(1));
@@ -246,7 +207,7 @@ void compare_score(Game& game)
 }
         
 
-void dealer_move(Game& game)
+void Game::dealer_move(Game& game)
 {
     std::cout << "Players decisions are made, Dealers turn" << std::endl;
     std::this_thread::sleep_for (std::chrono::seconds(1));
@@ -296,7 +257,7 @@ void dealer_move(Game& game)
 }
 
 
-void play_round(Game& game)
+void Game::play_round(Game& game)
 {
     std::cout << "Dealer has the Upcard ";
     print_card(game.dealer.hand[0]); // Print out first card of Dealers hand
@@ -310,14 +271,14 @@ void play_round(Game& game)
         for(int player = 0; player < game.num_players; player++)
         {
            std::cout << "Player number " << player+1 << " has the hand:" << std::endl;
-           print_hand(game.players[player].hand);
+           print_hand(game.players[player]->hand);
            std::this_thread::sleep_for (std::chrono::seconds(2));
-           game.players[player].score = check_score(game.players[player].hand);
-           std::cout << "Current Score: " << game.players[player].score << std::endl;
+           game.players[player]->score = check_score(game.players[player]->hand);
+           std::cout << "Current Score: " << game.players[player]->score << std::endl;
            std::this_thread::sleep_for (std::chrono::seconds(1));
             
            // check if player has a blackjack
-           if (check_blackjack(game.players[player].score) == true)
+           if (check_blackjack(game.players[player]->score) == true)
            {
                std::cout << "Player has a Blackjack!" << std::endl;
                std::cout << '\n';
@@ -330,16 +291,16 @@ void play_round(Game& game)
                if (make_decision() == 'h')
                {
                    // If players hits, he gets a new card and the score is checked again
-                   game.players[player].hand.push_back(game.deck.cards[0]);
+                   game.players[player]->hand.push_back(game.deck.cards[0]);
                    std::cout << "Player gets the card ";
                    print_card(game.deck.cards[0]);
                    std::this_thread::sleep_for (std::chrono::seconds(2));
-                   game.players[player].score = check_score(game.players[player].hand);
-                   std::cout << "Current Score: " << game.players[player].score << std::endl;
+                   game.players[player]->score = check_score(game.players[player]->hand);
+                   std::cout << "Current Score: " << game.players[player]->score << std::endl;
                    std::this_thread::sleep_for (std::chrono::seconds(2));
                    game.deck.cards.erase(game.deck.cards.begin());
                    
-                   if (game.players[player].score > 21)
+                   if (game.players[player]->score > 21)
                    {
                        std::cout << "Player bust!" << std::endl;
                        std::cout << '\n';
@@ -375,7 +336,7 @@ void clear_hands(Game& game)
     // clear the vectors containing the cards for player and dealer
     for (int player = 0; player < game.num_players; player++)
     {
-        game.players[player].hand.clear();
+        game.players[player]->hand.clear();
     }
     game.dealer.hand.clear();
 }

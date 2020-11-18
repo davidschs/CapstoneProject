@@ -27,8 +27,8 @@
             filePath = "src/game.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
             landmarkName = "deal_cards(game)"
             landmarkType = "9">
          </BreakpointContent>
@@ -91,8 +91,8 @@
             filePath = "src/game.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "174"
-            endingLineNumber = "174"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
             landmarkName = "all_player_bust(game)"
             landmarkType = "9">
          </BreakpointContent>
@@ -107,10 +107,10 @@
             filePath = "src/game.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "259"
-            endingLineNumber = "259"
-            landmarkName = "dealer_move(game)"
-            landmarkType = "9">
+            startingLineNumber = "220"
+            endingLineNumber = "220"
+            landmarkName = "Game::dealer_move(game)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -123,10 +123,10 @@
             filePath = "src/game.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "357"
-            endingLineNumber = "357"
-            landmarkName = "play_round(game)"
-            landmarkType = "9">
+            startingLineNumber = "318"
+            endingLineNumber = "318"
+            landmarkName = "Game::play_round(game)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -139,10 +139,10 @@
             filePath = "src/game.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "add_players(game)"
-            landmarkType = "9">
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "Game::add_players(game)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -155,10 +155,10 @@
             filePath = "src/game.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
-            landmarkName = "add_players(game)"
-            landmarkType = "9">
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "Game::add_players(game)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -171,10 +171,10 @@
             filePath = "src/game.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "add_players(game)"
-            landmarkType = "9">
+            startingLineNumber = "46"
+            endingLineNumber = "46"
+            landmarkName = "Game::add_players(game)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

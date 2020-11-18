@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <vector>
+#include <memory>
 #include "deck.hpp"
 
 struct Player {
@@ -18,26 +19,34 @@ struct Player {
     int score;
 };
 
-struct Game {
-    std::vector<Player> players;
+class Game {
+public:
+    Game() : players(std::vector<std::make_unique<Player>>()) {}
+    
     Player dealer;
     int num_players;
-    int cards_per_hand = 2;
     Deck deck;
+    // Getter function to access number of dealt cards in first round
+    int get_cards_per_hand() const {return cards_per_hand_; }
+    
+    void initialize(Game&);
+    void game_loop(Game&);
+    void add_players(Game&);
+    void play_round(Game&);
+    void dealer_move(Game&);
+    void compare_score(Game&);
+    
+private:
+    int cards_per_hand_ = 2;
+    std::vector<std::unique_ptr<Player>> players;
 };
 
-void initialize(Game&);
-void add_players(Game&);
 void deal_cards(Game&);
 void print_game(const Game&);
-void play_round(Game&);
 char make_decision();
-int check_score(const std::vector<Card>&);
-void compare_score(Game&);
-void dealer_move(Game&);
 bool check_blackjack(int);
 bool all_player_bust(Game&);
-void game_loop(Game&);
 void clear_hands(Game&);
+
 #endif /* game_hpp */
     
