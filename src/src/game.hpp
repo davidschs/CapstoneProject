@@ -21,7 +21,10 @@ struct Player {
 
 class Game {
 public:
-    Game() : players(std::vector<std::make_unique<Player>>()) {}
+    
+   // Game() : players(std::vector<std::make_unique<Player>>()) {}
+    
+    std::vector<std::shared_ptr<Player>> players(new Player);
     
     Player dealer;
     int num_players;
@@ -38,7 +41,6 @@ public:
     
 private:
     int cards_per_hand_ = 2;
-    std::vector<std::unique_ptr<Player>> players;
 };
 
 void deal_cards(Game&);
