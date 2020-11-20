@@ -14,10 +14,13 @@
 
 int main() {
     std::cout << '\n';
-    std::cout << "♤♤♤♤♤♤♤♤♤♤♤♤ BLACKJACK ♤♤♤♤♤♤♤♤♤♤♤♤" << std::endl;
+    std::cout << "♤♤♤♤♤♤♤♤♤♤♤♤♤♤ BLACKJACK ♤♤♤♤♤♤♤♤♤♤♤♤♤♤" << std::endl;
     
     Game game;
     game.initialize(game);
     game.game_loop(game);
+    
+    std::cout << '\n';
+    std::cout << "♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤♤" << std::endl;
 }
 

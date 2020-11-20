@@ -27,6 +27,7 @@ void Game::initialize(Game& game)
 
 void Game::game_loop (Game& game)
 {
+    //Play game until cut card is reached
     while (game.deck.cards.size() > 30) // Dealer Cut with 30 cards remaining
        {
            deal_cards(game);
@@ -54,7 +55,7 @@ void Game::add_players(Game& game)
     for (int player = 0; player < game.num_players; player++)
     {
         Player new_player;
-        game.players.emplace_back(std::move(new_player));
+        game.players.emplace_back(std::make_shared<Player>());
     }
     std::cout << game.players.size() << " Player(s) have been created" << std::endl;
 }
@@ -63,12 +64,12 @@ void Game::add_players(Game& game)
 
 void deal_cards(Game& game)
 {
-    std::this_thread::sleep_for (std::chrono::seconds(1));
-    std::cout << "-------------------------------------" << std::endl;
+    // Deal the first round, each player + dealer gets two cards
+    std::this_thread::sleep_for (std::chrono::seconds(2));
+    std::cout << "--------------------------------------" << std::endl;
     std::cout << "New cards will be dealt" << std::endl;
     std::this_thread::sleep_for (std::chrono::seconds(1));
 
-        // Deal the first round, each player + dealer gets two cards
         for (int card = 0; card < game.get_cards_per_hand(); card++)
         {
             for (int player = 0; player < game.num_players; player++)
@@ -85,6 +86,7 @@ void deal_cards(Game& game)
 
 void print_game(const Game& game)
 {
+    // Printing all hands including dealers hand
     for (int player = 0; player < game.num_players; player++)
     {
         std::cout << "Player " << player+1 << " has the hand";
@@ -130,9 +132,9 @@ char make_decision()
 
 bool all_player_bust(Game& game)
 {
+    //check if all players busted in this round
     bool players_bust = true;
     int player = 0;
-    //check if all players busted in this round
     while (players_bust == true && player < game.num_players)
     {
         game.players[player]->score = check_score(game.players[player]->hand);
@@ -149,6 +151,7 @@ bool all_player_bust(Game& game)
 
 bool check_blackjack(int score)
 {
+    // check if playr or dealer has a blackjack when called
     bool blackjack = false;
     if (score == 21)
     {
@@ -209,9 +212,10 @@ void Game::compare_score(Game& game)
 
 void Game::dealer_move(Game& game)
 {
+    // Players did their moves, not the dealer shows his cards
     std::cout << "Players decisions are made, Dealers turn" << std::endl;
     std::this_thread::sleep_for (std::chrono::seconds(1));
-    std::cout << "----------------------------------------" << std::endl;
+    std::cout << "--------------------------------------" << std::endl;
     std::this_thread::sleep_for (std::chrono::seconds(2));
     std::cout << "Dealers hole card is a ";
     print_card(game.dealer.hand[1]);
@@ -259,6 +263,7 @@ void Game::dealer_move(Game& game)
 
 void Game::play_round(Game& game)
 {
+    // cards are dealt, now each player+dealer makes their moves
     std::cout << "Dealer has the Upcard ";
     print_card(game.dealer.hand[0]); // Print out first card of Dealers hand
     std::cout << '\n';
@@ -321,7 +326,7 @@ void Game::play_round(Game& game)
     }
     else
     {
-        // If dealer does have a Blackjack, compare score with players
+        // If dealer does have a Blackjack, compare score with players immediately
         std::cout << "Dealer has a Blackjack!" << std::endl;
         std::this_thread::sleep_for (std::chrono::seconds(2));
         print_game(game);

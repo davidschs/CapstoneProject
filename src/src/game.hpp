@@ -24,7 +24,7 @@ public:
     
    // Game() : players(std::vector<std::make_unique<Player>>()) {}
     
-    std::vector<std::shared_ptr<Player>> players(new Player);
+    std::vector<std::shared_ptr<Player>> players;
     
     Player dealer;
     int num_players;
